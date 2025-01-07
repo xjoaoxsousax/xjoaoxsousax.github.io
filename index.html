@@ -9,11 +9,10 @@
 </head>
 <body>
     <h1>Mapa de Linhas - Carris Metropolitana</h1>
-    <div class="linha-select">
-        <label for="linhaSelect">Escolha a Linha:</label>
-        <select id="linhaSelect">
-            <option value="">Selecione...</option>
-        </select>
+    <div class="linha-input">
+        <label for="linhaInput">Digite o número da Linha:</label>
+        <input type="text" id="linhaInput" placeholder="Ex: 1001">
+        <button id="buscarBtn">Buscar Linha</button>
     </div>
     <div id="map"></div>
 
