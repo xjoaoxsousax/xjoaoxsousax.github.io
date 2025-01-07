@@ -35,14 +35,23 @@ async function carregarParagens(routeId) {
         }
     });
 
+    let paragensEncontradas = false;
+
     // Adicionar paragens da linha selecionada
     paragens
         .filter(stop => stop.route_id === routeId)  // Filtra por linha
         .forEach(stop => {
-            L.marker([stop.stop_lat, stop.stop_lon])
-                .addTo(map)
-                .bindPopup(`<b>${stop.stop_name}</b><br>ID: ${stop.stop_id}`);
+            if (stop.stop_lat && stop.stop_lon) {
+                paragensEncontradas = true;
+                L.marker([parseFloat(stop.stop_lat), parseFloat(stop.stop_lon)])
+                    .addTo(map)
+                    .bindPopup(`<b>${stop.stop_name}</b><br>ID: ${stop.stop_id}`);
+            }
         });
+
+    if (!paragensEncontradas) {
+        alert('Nenhuma paragem encontrada para esta linha!');
+    }
 }
 
 // Função para processar o CSV
@@ -80,3 +89,4 @@ async function buscarLinha() {
 
 // Adiciona evento ao botão de buscar
 document.getElementById('buscarBtn').addEventListener('click', buscarLinha);
+
