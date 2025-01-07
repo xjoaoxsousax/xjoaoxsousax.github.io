@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
 }).addTo(map);
 
-// Função para carregar linhas do routes.txt
+// Função para carregar as linhas (routes.txt)
 async function carregarLinhas() {
     const response = await fetch('https://xjoaoxsousax.github.io/routes.txt');
     if (!response.ok) {
@@ -17,7 +17,7 @@ async function carregarLinhas() {
     return parseCSV(routesTxt);
 }
 
-// Carregar paragens do stops.txt
+// Função para carregar as paragens (stops.txt)
 async function carregarParagens(routeId) {
     const response = await fetch('https://xjoaoxsousax.github.io/stops.txt');
     if (!response.ok) {
@@ -37,9 +37,9 @@ async function carregarParagens(routeId) {
 
     let paragensEncontradas = false;
 
-    // Adicionar paragens da linha selecionada
+    // Adicionar paragens da linha selecionada no mapa
     paragens
-        .filter(stop => stop.route_id === routeId)  // Filtra por linha
+        .filter(stop => stop.route_id === routeId)  // Filtra paragens pela linha
         .forEach(stop => {
             if (stop.stop_lat && stop.stop_lon) {
                 paragensEncontradas = true;
@@ -83,7 +83,7 @@ async function buscarLinha() {
         return;
     }
 
-    // Exibe as paragens da linha no mapa
+    // Exibe as paragens dessa linha no mapa
     carregarParagens(linhaSelecionada.route_id);
 }
 
