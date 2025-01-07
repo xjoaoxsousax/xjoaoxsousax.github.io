@@ -1,17 +1,25 @@
-<input type="text" id="lineSearch" placeholder="Digite o número da linha" />
-<button onclick="searchLine()">Buscar</button>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rota de Autocarro</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Link do Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+  <header>
+    <h1>Consulta de Linhas de Autocarro</h1>
+    <input type="text" id="lineSearch" placeholder="Digite o número da linha" />
+    <button onclick="searchLine()">Buscar Linha</button>
+  </header>
+  
+  <main>
+    <div id="map"></div>
+  </main>
 
-<script>
-  function searchLine() {
-    const lineNumber = document.getElementById('lineSearch').value;
-    fetch(`https://api.carrismetropolitana.pt/gtfs/routes?route_id=${lineNumber}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Exibe a linha selecionada no console
-        // Aqui, você pode usar os dados da rota para desenhar no mapa
-      })
-      .catch(error => {
-        console.error('Erro ao buscar a linha:', error);
-      });
-  }
-</script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
