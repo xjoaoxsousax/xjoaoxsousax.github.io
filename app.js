@@ -1,40 +1,75 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotas de Transporte</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+// Inicializa o mapa
+function initMap() {
+    // Define o ponto inicial do mapa (coordenadas de Lisboa)
+    const mapOptions = {
+        center: { lat: 38.7223, lng: -9.1393 },
+        zoom: 12,
+    };
 
-    <header>
-        <h1>Rotas de Transporte</h1>
-    </header>
+    const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    <div id="seletor-linha">
-        <label for="linha">Escolha uma linha:</label>
-        <select id="linha">
-            <!-- As opções serão preenchidas via JavaScript -->
-        </select>
-    </div>
+    // Define o comportamento do botão de busca
+    const buscarBtn = document.getElementById('buscar');
+    buscarBtn.addEventListener('click', () => {
+        const linha = document.getElementById('linha').value;
+        if (linha) {
+            getRouteData(linha, map);
+        } else {
+            showAlert('Por favor, selecione uma linha!', 'error');
+        }
+    });
+}
 
-    <div id="informacoes-linha">
-        <h2>Informações da Linha</h2>
-        <p id="informacoes">Selecione uma linha para ver as informações.</p>
-    </div>
+// Função para obter os dados de uma rota (mocked example)
+function getRouteData(linha, map) {
+    // Exemplo de dados mockados para rotas (substitua isso com dados reais)
+    const rotas = {
+        "1001": [
+            { lat: 38.7350, lng: -9.1400 },
+            { lat: 38.7400, lng: -9.1450 },
+            { lat: 38.7450, lng: -9.1500 },
+        ],
+        "1002": [
+            { lat: 38.7300, lng: -9.1350 },
+            { lat: 38.7350, lng: -9.1400 },
+            { lat: 38.7400, lng: -9.1450 },
+        ],
+        "1003": [
+            { lat: 38.7250, lng: -9.1300 },
+            { lat: 38.7300, lng: -9.1350 },
+            { lat: 38.7350, lng: -9.1400 },
+        ]
+    };
 
-    <div id="estimativas">
-        <h2>Estimativas de Chegada</h2>
-        <ul id="estimativas-lista">
-            <!-- As estimativas serão preenchidas via JavaScript -->
-        </ul>
-    </div>
+    const rota = rotas[linha];
+    if (rota) {
+        drawRoute(rota, map);
+        showAlert(`Rota da Linha ${linha} carregada com sucesso!`, 'success');
+    } else {
+        showAlert('Erro ao carregar a rota, tente novamente!', 'error');
+    }
+}
 
-    <div id="mapa"></div>
+// Função para desenhar a rota no mapa
+function drawRoute(rota, map) {
+    const routePath = new google.maps.Polyline({
+        path: rota,
+        geodesic: true,
+        strokeColor: "#FF0000",  // Cor da linha
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    routePath.setMap(map);
+}
 
+// Função para exibir alertas
+function showAlert(message, type) {
+    const alertBox = document.getElementById('alert');
+    alertBox.textContent = message;
+    alertBox.className = `alert ${type}`;
+    setTimeout(() => {
+        alertBox.textContent = '';
+        alertBox.className = 'alert';
+    }, 3000);
+}
