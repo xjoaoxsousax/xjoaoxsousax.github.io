@@ -1,55 +1,30 @@
-const map = L.map('map').setView([38.74, -9.19], 12); // Centro de Lisboa
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
-let routeLayer; // Layer para desenhar a linha no mapa
-
-// Função para carregar as linhas na dropdown
-async function carregarLinhas() {
-    const response = await fetch('https://api.carrismetropolitana.pt/gtfs/routes');
-    const data = await response.json();
+async function carregarParagens() {
+    const response = await fetch('https://xjoaoxsousax.github.io/stops.txt');
+    if (!response.ok) {
+        alert('Erro ao carregar paragens');
+        return;
+    }
     
-    const select = document.getElementById('linhaSelect');
-    data.forEach(route => {
-        const option = document.createElement('option');
-        option.value = route.route_id;
-        option.textContent = `${route.route_short_name} - ${route.route_long_name}`;
-        select.appendChild(option);
+    const stopsTxt = await response.text();
+    const paragens = parseCSV(stopsTxt);
+    
+    paragens.forEach(stop => {
+        console.log(`Paragem: ${stop.stop_name} | Latitude: ${stop.stop_lat} | Longitude: ${stop.stop_lon}`);
     });
 }
 
-// Função para buscar e desenhar a rota selecionada
-async function desenharRota(routeId) {
-    if (routeLayer) {
-        map.removeLayer(routeLayer); // Remove rota anterior
-    }
-
-    const response = await fetch(`https://api.carrismetropolitana.pt/gtfs/trips?route_id=${routeId}`);
-    const data = await response.json();
-
-    if (data && data.length > 0) {
-        const coordinates = data[0].shape.map(coord => [coord.lat, coord.lon]);
-
-        routeLayer = L.polyline(coordinates, {
-            color: 'blue',
-            weight: 5
-        }).addTo(map);
-
-        map.fitBounds(routeLayer.getBounds());
-    } else {
-        alert('Nenhuma rota encontrada para esta linha.');
-    }
+// Função de CSV para Objeto (já usada para routes.txt)
+function parseCSV(csvText) {
+    const linhas = csvText.split('\n').map(row => row.split(','));
+    const headers = linhas.shift();
+    return linhas.map(linha => {
+        let obj = {};
+        headers.forEach((header, index) => {
+            obj[header] = linha[index];
+        });
+        return obj;
+    });
 }
 
-// Evento para detectar a mudança na seleção
-document.getElementById('linhaSelect').addEventListener('change', (event) => {
-    const linhaSelecionada = event.target.value;
-    if (linhaSelecionada) {
-        desenharRota(linhaSelecionada);
-    }
-});
-
-// Carregar linhas ao iniciar
-carregarLinhas();
+// Carregar paragens ao iniciar
+carregarParagens();
