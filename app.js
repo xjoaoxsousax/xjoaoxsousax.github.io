@@ -1,68 +1,40 @@
-let map;
-let marker;
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotas de Transporte</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function initMap() {
-    // Criando o mapa
-    map = new google.maps.Map(document.getElementById('mapa'), {
-        zoom: 13,
-        center: { lat: 38.726, lng: -9.145 },
-    });
+    <header>
+        <h1>Rotas de Transporte</h1>
+    </header>
 
-    // Preencher o seletor com opções de linhas
-    fetchLinhas();
+    <div id="seletor-linha">
+        <label for="linha">Escolha uma linha:</label>
+        <select id="linha">
+            <!-- As opções serão preenchidas via JavaScript -->
+        </select>
+    </div>
 
-    // Detectar mudanças no seletor de linha
-    document.getElementById('linha').addEventListener('change', function () {
-        const linhaId = this.value;
-        if (linhaId) {
-            fetchInformacoesLinha(linhaId);
-            fetchEstimativasChegada(linhaId);
-        }
-    });
-}
+    <div id="informacoes-linha">
+        <h2>Informações da Linha</h2>
+        <p id="informacoes">Selecione uma linha para ver as informações.</p>
+    </div>
 
-function fetchLinhas() {
-    // Aqui você vai buscar as linhas na API (usando um endpoint como /lines)
-    // Exemplo de dados fictícios
-    const linhas = [
-        { id: '1001', nome: 'Linha 1001 - Alfragide a Reboleira' },
-        { id: '1002', nome: 'Linha 1002 - Belém a Cais do Sodré' },
-    ];
+    <div id="estimativas">
+        <h2>Estimativas de Chegada</h2>
+        <ul id="estimativas-lista">
+            <!-- As estimativas serão preenchidas via JavaScript -->
+        </ul>
+    </div>
 
-    const selectElement = document.getElementById('linha');
-    linhas.forEach(linha => {
-        const option = document.createElement('option');
-        option.value = linha.id;
-        option.textContent = linha.nome;
-        selectElement.appendChild(option);
-    });
-}
+    <div id="mapa"></div>
 
-function fetchInformacoesLinha(linhaId) {
-    // Aqui você vai buscar as informações da linha na API (usando um endpoint como /lines/:id)
-    // Exemplo de dados fictícios
-    const informacoes = {
-        '1001': 'Informações da linha 1001: Alfragide a Reboleira.',
-        '1002': 'Informações da linha 1002: Belém a Cais do Sodré.',
-    };
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>
 
-    document.getElementById('informacoes').textContent = informacoes[linhaId] || 'Informações não disponíveis.';
-}
-
-function fetchEstimativasChegada(linhaId) {
-    // Aqui você vai buscar as estimativas de chegada na API (usando um endpoint como /stops/:id/realtime)
-    // Exemplo de dados fictícios
-    const estimativas = [
-        { horario: '08:56', destino: 'Freiria (E.B. 2-3)' },
-        { horario: '09:00', destino: 'Reboleira (Estação)' },
-    ];
-
-    const lista = document.getElementById('estimativas-lista');
-    lista.innerHTML = ''; // Limpar lista existente
-
-    estimativas.forEach(estimativa => {
-        const li = document.createElement('li');
-        li.textContent = `Horário: ${estimativa.horario}, Destino: ${estimativa.destino}`;
-        lista.appendChild(li);
-    });
-}
