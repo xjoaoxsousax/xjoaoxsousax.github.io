@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Linhas - Carris Metropolitana</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <title>Mapa das Linhas de Autocarro</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; }
+        #search-container { margin: 20px 0; }
+    </style>
 </head>
 <body>
-    <h1>Mapa de Linhas - Carris Metropolitana</h1>
-    <div class="linha-input">
-        <label for="linhaInput">Digite o número da Linha:</label>
-        <input type="text" id="linhaInput" placeholder="Ex: 1001">
+    <div id="search-container">
+        <input type="text" id="linhaInput" placeholder="Digite o número da linha" />
         <button id="buscarBtn">Buscar Linha</button>
     </div>
     <div id="map"></div>
-
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
