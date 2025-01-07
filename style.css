@@ -12,8 +12,19 @@ h1 {
     margin: 20px 0;
 }
 
-.linha-select {
+.linha-input {
     margin-bottom: 10px;
+}
+
+#linhaInput {
+    padding: 5px;
+    font-size: 16px;
+}
+
+#buscarBtn {
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 16px;
 }
 
 #map {
