@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consulta de Linhas de Autocarro</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Link do Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Rotas - Carris Metropolitana</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Consulta de Linhas de Autocarro</h1>
-    <input type="text" id="lineSearch" placeholder="Digite o número da linha" />
-    <button onclick="searchLine()">Buscar Linha</button>
-  </header>
-  
-  <main>
-    <div id="map"></div>
-  </main>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  <script src="app.js"></script>
+    <h1>Busca de Rotas</h1>
+    
+    <!-- Campo para inserir o número da linha -->
+    <label for="lineInput">Número da Linha:</label>
+    <input type="text" id="lineInput" placeholder="Digite o número da linha">
+
+    <!-- Botão para buscar as rotas -->
+    <button onclick="searchLine()">Buscar</button>
+
+    <!-- Container para exibir as rotas encontradas -->
+    <div id="routesContainer"></div>
+
+    <script src="app.js"></script>
 </body>
 </html>
