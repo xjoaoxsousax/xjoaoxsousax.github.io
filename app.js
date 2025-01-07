@@ -19,6 +19,8 @@ function searchLine() {
   fetch('https://api.carrismetropolitana.pt/gtfs/routes')
     .then(response => response.json())
     .then(data => {
+      console.log('Rotas disponíveis:', data); // Exibir as rotas para verificar o que estamos recebendo
+
       // Procurar a linha solicitada
       const route = data.find(route => route.route_short_name == lineNumber);
 
@@ -27,10 +29,15 @@ function searchLine() {
         return;
       }
 
+      // Exibir os dados da rota encontrada
+      console.log('Rota encontrada:', route);
+
       // Consultar as formas de deslocamento dessa linha
       fetch(`https://api.carrismetropolitana.pt/gtfs/shapes?route_id=${route.route_id}`)
         .then(response => response.json())
         .then(shapeData => {
+          console.log('Dados da forma da linha:', shapeData); // Exibir as formas para verificar o que estamos recebendo
+
           if (shapeData.length === 0) {
             alert('Não foi possível encontrar a forma da linha.');
             return;
