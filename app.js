@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
 }).addTo(map);
 
-// Carregar linhas do routes.txt
+// Função para carregar linhas do routes.txt
 async function carregarLinhas() {
     const response = await fetch('https://xjoaoxsousax.github.io/routes.txt');
     if (!response.ok) {
@@ -14,22 +14,7 @@ async function carregarLinhas() {
     }
     
     const routesTxt = await response.text();
-    const linhas = parseCSV(routesTxt);
-
-    const select = document.getElementById('linhaSelect');
-    linhas.forEach(route => {
-        const option = document.createElement('option');
-        option.value = route.route_id;
-        option.textContent = `${route.route_short_name} - ${route.route_long_name}`;
-        select.appendChild(option);
-    });
-
-    select.addEventListener('change', (e) => {
-        const linhaSelecionada = e.target.value;
-        if (linhaSelecionada) {
-            carregarParagens(linhaSelecionada);
-        }
-    });
+    return parseCSV(routesTxt);
 }
 
 // Carregar paragens do stops.txt
@@ -60,7 +45,7 @@ async function carregarParagens(routeId) {
         });
 }
 
-// Função para converter CSV para Objeto
+// Função para processar o CSV
 function parseCSV(csvText) {
     const linhas = csvText.trim().split('\n').map(row => row.split(','));
     const headers = linhas.shift();
@@ -73,5 +58,25 @@ function parseCSV(csvText) {
     });
 }
 
-// Carregar linhas ao iniciar
-carregarLinhas();
+// Função para buscar a linha pelo número
+async function buscarLinha() {
+    const linhaInput = document.getElementById('linhaInput').value.trim();
+    if (!linhaInput) {
+        alert('Digite um número de linha válido');
+        return;
+    }
+
+    const linhas = await carregarLinhas();
+    const linhaSelecionada = linhas.find(linha => linha.route_short_name === linhaInput);
+
+    if (!linhaSelecionada) {
+        alert('Linha não encontrada!');
+        return;
+    }
+
+    // Exibe as paragens da linha no mapa
+    carregarParagens(linhaSelecionada.route_id);
+}
+
+// Adiciona evento ao botão de buscar
+document.getElementById('buscarBtn').addEventListener('click', buscarLinha);
